@@ -1,0 +1,33 @@
+version: '3.7'
+services:
+  mysql-service:
+    image: mysql
+    mem_reservation: 300m
+    ports:
+      - "3306:3306"
+    networks:
+      - client-network
+    environment:
+      - "MYSQL_ROOT_PASSWORD=P4ssw0rd"
+      - "MYSQL_DATABASE=clientes"
+      - "MYSQL_USER=admin"
+      - "MYSQL_PASSWORD=4dm1n4dm1n"
+
+  client-service:
+    image: senneko84/client-rest:0.0.1-SNAPSHOT
+    mem_reservation: 500m
+    ports:
+      - "8080:8080"
+    networks:
+      - client-network
+    environment:
+      - "MYSQL_HOST=mysql-service"
+      - "SPRING.DATASOURCE.USERNAME=admin"
+      - "SPRING.DATASOURCE.PASSWORD=4dm1n4dm1n"
+      - "SPRING.SECURITY.USER.NAME=usuario_fantasma"
+      - "SPRING.SECURITY.USER.PASSWORD=P4ssW0rd"
+    depends_on:
+      - mysql-service
+
+networks:
+  client-network:
